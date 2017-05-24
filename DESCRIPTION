@@ -1,0 +1,17 @@
+Package: dataFun
+Type: Package
+Title: Data is Cool!
+Version: 0.1.0
+Authors@R: person("Jason", "Gregory", email = "Jason.Gregory@selecthealth.com", role = c("aut", "cre"))
+Maintainer@R: person("Jason", "Gregory", email = "Jason.Gregory@selecthealth.com", role = c("aut", "cre"))
+Description: Allows for way more fun when preparing data, exploring data, modeling data, predicting data, and everything data.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Depends:
+        dplyr,
+        psych,
+        rmarkdown,
+        VIM,
+        DataExplorer
+RoxygenNote: 6.0.1

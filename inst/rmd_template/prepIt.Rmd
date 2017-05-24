@@ -1,0 +1,71 @@
+---
+title: "Data Preparation"
+output: html_document
+params:
+  data: data
+  fun_options: fun_options
+---
+
+```{r global_options, include=FALSE}
+library(rmarkdown)
+
+data <- params$data
+
+opts <- params$fun_options
+knitr::opts_chunk$set(fig.width = 14, fig.height = 10, echo = TRUE)
+```
+
+### General Information
+This report is intended to help prepare your data. Additional fuctions for preparation are the following:
+
+* p.numeric(dta): Lists numeric variables.
++ p.continuous(dta, max_levels): Lists numeric continuous variables. Default for max_levels is .1 which restricts to numeric variables with 10% or more unique values.
++ p.discrete(dta, max_levels): Lists numeric discrete variables. Default for max_levels is .1 which restricts to numeric variables with less than 10% unique values.
++ p.integer(dta): Lists integer variables.
++ p.character(dta): Lists character variables.
++ p.unique(dta): Lists variables where every value is unique.
++ p.factor(dta): Lists factor variables.
++ p.asFactor(dta, columns): Converts variables to factors. Default for columns is any numeric discrete variables.
++ p.replaceNull(dta, columns, null_value): Replaces null values for factor variables. The default null_value is "Missing". Good to use in combination with p.factor().
++ p.removeVariables(dta, columns): Removes variables from data set. Good to use in combination with p.unique().
+
+
+#### Top row & bottom row sample of data 
+
+```{r prep_TopBottom}
+head(data)
+tail(data)
+```
+
+
+#### Data Structure
+
+```{r prep_Structure}
+str(data)
+```
+
+#### Data Summary
+Builds off of the describe() function.
+```{r prep_Summary}
+p.summary(data) #* represents factor variables.
+```
+
+#### Data Structure (Summary of Variables)
+Numeric discrete lists any numeric variables where less than 10% of their data is unique.
+```{r prep_DetailedStructure}
+p.structure(data)
+```
+
+#### Table Summaries of Data
+Table summary of all numeric discrete & factor variables with 100 or less distinct values. Builds off of the table() function. For a specific table summary of a variable use the table() function.
+```{r prep_Table}
+p.table(data)
+```
+
+#### Missing Data
+The following graphs shows the distribution of missing values.
+```{r prep_PlotNull}
+DataExplorer::PlotMissing(data)
+VIM::aggr(data, numbers=TRUE)
+```
+

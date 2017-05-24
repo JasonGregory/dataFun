@@ -1,0 +1,90 @@
+---
+title: "Data Exploration"
+output: html_document
+params:
+  data: data
+  fun_options: fun_options
+---
+
+```{r global_options, include=FALSE}
+library(rmarkdown)
+
+data <- params$data
+
+titl <- function(txt) title(txt, col.main="navy")
+
+num_discrete <- SplitColType(params$data)$num_discrete
+num_continuous <- SplitColType(params$data)$num_continuous
+num_all_missing <- SplitColType(params$data)$num_all_missing
+
+continuous_error <- function(e) {
+  if (num_continuous == 0) {
+    cat("No continuous features found.")
+  } else {
+    cat("Continuous features contain too many missing values.\n")
+    cat("Try using PlotMissing() to determine which features to drop.")
+  }
+}
+
+discrete_error <- function(e) {
+  if (num_discrete == 0) {
+    cat("No discrete features found.")
+  } else {
+    cat("Discrete features contain too many categories.\n")
+    cat("Try using CollapseCategory() to reduce categories.")
+  }
+}
+
+opts <- params$fun_options
+knitr::opts_chunk$set(fig.width = 14, fig.height = 10, echo = TRUE)
+```
+
+### Continuous (Histogram)
+Histogram of continuous variables
+```{r}
+DataExplorer::HistogramContinuous(data)
+```
+
+### Continuous (Histogram)
+Denisity plot of continuous variables
+```{r}
+DataExplorer::DensityContinuous(data)
+```
+
+#### Discrete (Bar Charts)
+###### Bar Charts
+```{r}
+if (length(p.factor(data)) > 0) {
+  DataExplorer::BarDiscrete(data)  
+} else {
+  print("No factors to plot.")  
+}
+```
+
+### Correlation Matrix for Numeric Variables
+Correlation matrix is based on the pairs.panels() function
+```{r}
+e.cormat(data[p.numeric(data)])
+```
+
+### Correlation Matrix for Factor Variables
+```{r}
+e.cormat(data[p.factor(data)])
+```
+
+### Numeric vs factor box plots
+```{r}
+par(mfrow=c(1,2))
+for (i in 1:length(p.numeric(data))) {
+  y <- data[,p.numeric(data)[i]] 
+  for (t in 1:length(p.factor(data))) {
+  boxplot(y ~ data[,p.factor(data)[t]], col=rainbow(t), varwidth=TRUE)
+  abline(h=mean(y), col="navy")
+  titl(paste(p.numeric(data)[i], "vs.", p.factor(data)[t], sep=" "))
+  }
+}
+```
+
+
+
+
