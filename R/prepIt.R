@@ -8,8 +8,8 @@ p.summary <- function(dta) {
   dta[dta==""] <- NA
   tmp <- describe(dta)
   ncol <- ncol(tmp)
-  tmp$nrow <- dim(dat)[1]
-  tmp$ncol <- dim(dat)[2]
+  tmp$nrow <- dim(dta)[1]
+  tmp$ncol <- dim(dta)[2]
   tmp$distn <- apply(dta, 2, function(x) length(unique(x)))
   tmp$distperc <- apply(dta, 2, function(x) round(length(unique(x))/length(x),3))
   tmp$nulln <- apply(dta, 2, function(x) sum(I(is.na(x))*1))
